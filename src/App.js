@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FileTextOutlined, FileImageOutlined } from '@ant-design/icons';
 
 const { DirectoryTree } = Tree;
+const URL = "http://164.90.161.80:3000/api/content";
 
 function updateTreeData(list, key, children, id) {
   return list.map((node) => {
@@ -44,9 +45,8 @@ function App() {
         return;
       }
 
-      axios.get(`http://164.90.161.80:3000/api/content?dirId=${id}`)
+      axios.get(`${URL}?dirId=${id}`)
         .then(({ data }) => {
-          console.log("data", data);
 
           const items = data.children.map(el => ({
             ...el,
@@ -55,7 +55,6 @@ function App() {
           setData((origin) =>
             updateTreeData(origin, key, items, id),
           );
-          console.log("DATA UPDATE", data);
           resolve();
         })
         .catch((err) => {
@@ -66,10 +65,8 @@ function App() {
   }
 
   useEffect(() => {
-    axios.get("http://164.90.161.80:3000/api/content")
+    axios.get(URL)
       .then(({ data }) => {
-        // handle success
-        console.log("data", data);
         const items = data.children.map(el => ({
           ...el,
           key: el.id
